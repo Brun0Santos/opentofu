@@ -12,6 +12,6 @@ public class OpenTofuController {
     @GetMapping
     public String message() {
         requestCount += 1;
-        return "Server is running, number of requests: " + requestCount;
+        return "Server is running..., number of requests: " + requestCount;
     }
 }
