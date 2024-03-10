@@ -4,18 +4,27 @@ provider "aws" {
 
 resource "aws_vpc" "opentofu_supera_vpc" {
   cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "vpc_supera"
+  }
 }
 
 resource "aws_subnet" "supera_subnet1" {
   vpc_id            = aws_vpc.opentofu_supera_vpc.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = "us-east-1a"
+  tags = {
+    Name = "subnet_1_supera"
+  }
 }
 
 resource "aws_subnet" "supera_subnet2" {
   vpc_id            = aws_vpc.opentofu_supera_vpc.id
   cidr_block        = "10.0.2.0/24"
   availability_zone = "us-east-1a"
+  tags = {
+    Name = "subnet_2_supera"
+  }
 }
 
 resource "aws_security_group" "opentofu_supera_sg" {
