@@ -3,7 +3,7 @@ name: Deploy de uma aplicação Spring Boot usando o OpenTofu + AWS
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
