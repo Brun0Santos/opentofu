@@ -19,13 +19,13 @@ resource "aws_subnet" "supera_subnet2" {
 }
 
 resource "aws_instance" "supera_opentofu_instance1" {
-  ami           = "ami-0c55b159cbfafe1f0"
+  ami           = "ami-0f403e3180720dd7e"
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.supera_subnet1.id
 }
 
 resource "aws_instance" "supera_opentofu_instance2" {
-  ami           = "ami-0c55b159cbfafe1f0"
+  ami           = "ami-0f403e3180720dd7e"
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.supera_subnet2.id
 }
