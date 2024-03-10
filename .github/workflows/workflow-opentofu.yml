@@ -49,10 +49,10 @@ jobs:
 
       - name: Install Docker and Run Container on EC2
         run: |
-          echo "${{ secrets.EC2_PRIVATE_KEY }}" > ec2-key.pem
+          echo "${{ secrets.EC2_PRIVATE_KEY }}" > chave-ssh-opentofu.pem
           echo ec2-key.pem
           chmod 400 ec2-key.pem
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ steps.opentofu-apply.outputs.instance_ip }} << EOF
+          ssh -o StrictHostKeyChecking=no -i chave-ssh-opentofu.pem ec2-user@${{ steps.opentofu-apply.outputs.instance_ip }} << EOF
             sudo yum update -y
             sudo amazon-linux-extras install docker
             sudo service docker start
