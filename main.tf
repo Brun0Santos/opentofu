@@ -54,6 +54,10 @@ resource "aws_instance" "supera_opentofu_instance1" {
   vpc_security_group_ids = [aws_security_group.opentofu_supera_sg.id]
 }
 
+output "instance_ip" {
+  value = aws_instance.supera_opentofu_instance1.public_ip
+}
+
 #resource "aws_instance" "supera_opentofu_instance2" {
 #  ami                    = "ami-0f403e3180720dd7e"
 #  instance_type          = "t2.micro"
