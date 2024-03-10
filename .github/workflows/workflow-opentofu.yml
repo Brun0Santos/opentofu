@@ -50,7 +50,7 @@ jobs:
         run: |
           echo "${{ secrets.EC2_PRIVATE_KEY }}" > ec2-key.pem
           chmod 400 ec2-key.pem
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ steps.opentofu-outputs.outputs.instance_ip }} << EOF
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ steps.opentofu-apply.outputs.instance_ip }} << EOF
             sudo yum update -y
             sudo amazon-linux-extras install docker
             sudo service docker start
@@ -61,4 +61,3 @@ jobs:
           rm ec2-key.pem
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
