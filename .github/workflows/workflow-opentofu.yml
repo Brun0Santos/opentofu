@@ -25,10 +25,10 @@ jobs:
         run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
 
       - name: Build docker image
-        run: docker build -t brunosantos/opentofu .
+        run: docker build -t brunos4ntos/opentofu .
 
       - name: Publish image to docker hub
-        run: docker push brunosantos/opentofu:latest
+        run: docker push brunos4ntos/opentofu:latest
 
       - name: Install OpenTofu
         run: |
@@ -55,8 +55,8 @@ jobs:
             sudo amazon-linux-extras install docker
             sudo service docker start
             sudo usermod -a -G docker ec2-user
-            docker pull brunosantos/opentofu:latest
-            docker run -d -p 8080:8080 brunosantos/opentofu:latest
+            docker pull brunos4ntos/opentofu:latest
+            docker run -d -p 8080:8080 brunos4ntos/opentofu:latest
           EOF
           rm ec2-key.pem
         env:
