@@ -18,14 +18,14 @@ resource "aws_subnet" "supera_subnet1" {
   }
 }
 
-resource "aws_subnet" "supera_subnet2" {
-  vpc_id            = aws_vpc.opentofu_supera_vpc.id
-  cidr_block        = "10.0.2.0/24"
-  availability_zone = "us-east-1a"
-  tags = {
-    Name = "subnet_2_supera"
-  }
-}
+#resource "aws_subnet" "supera_subnet2" {
+#  vpc_id            = aws_vpc.opentofu_supera_vpc.id
+#  cidr_block        = "10.0.2.0/24"
+#  availability_zone = "us-east-1a"
+#  tags = {
+#    Name = "subnet_2_supera"
+#  }
+#}
 
 resource "aws_security_group" "opentofu_supera_sg" {
   name        = "opentofu_supera_sg"
@@ -54,9 +54,9 @@ resource "aws_instance" "supera_opentofu_instance1" {
   vpc_security_group_ids = [aws_security_group.opentofu_supera_sg.id]
 }
 
-resource "aws_instance" "supera_opentofu_instance2" {
-  ami                    = "ami-0f403e3180720dd7e"
-  instance_type          = "t2.micro"
-  subnet_id              = aws_subnet.supera_subnet2.id
-  vpc_security_group_ids = [aws_security_group.opentofu_supera_sg.id]
-}
+#resource "aws_instance" "supera_opentofu_instance2" {
+#  ami                    = "ami-0f403e3180720dd7e"
+#  instance_type          = "t2.micro"
+#  subnet_id              = aws_subnet.supera_subnet2.id
+#  vpc_security_group_ids = [aws_security_group.opentofu_supera_sg.id]
+#}
