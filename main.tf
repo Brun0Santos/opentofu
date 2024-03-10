@@ -44,6 +44,9 @@ resource "aws_instance" "supera_opentofu_instance1" {
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.supera_subnet1.id
   vpc_security_group_ids = [aws_security_group.opentofu_supera_sg.id]
+  tags = {
+    Name = "instance_tofu_supera"
+  }
 }
 
 output "instance_ip" {
