@@ -41,16 +41,21 @@ jobs:
         run: tofu init
 
       - name: OpenTofu Apply
+        id: opentofu-apply
         run: tofu apply -auto-approve
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+      - name: Debug instance IP
+        run:
+          echo "Instance IP: ${{ steps.opentofu-apply.outputs.instance_ip }}"
+
       - name: Install Docker and Run Container on EC2
         run: |
           echo "${{ secrets.EC2_PRIVATE_KEY }}" > ec2-key.pem
           chmod 400 ec2-key.pem
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ steps.opentofu-apply.outputs.instance_ip }} << EOF
+          ssh -T -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ steps.opentofu-apply.outputs.instance_ip }} << EOF
             sudo yum update -y
             sudo amazon-linux-extras install docker
             sudo service docker start
