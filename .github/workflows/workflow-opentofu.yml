@@ -12,6 +12,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build Project
+        run: mvn clean install -DskipTests
+
+      - name: Login to docker hub
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+
+      - name: Build docker image
+        run: docker build -t brunosantos/opentofu .
+
+      - name: Publish image to docker hub
+        run: docker push brunosantos/opentofu:latest
+
       - name: Install OpenTofu
         run: |
           curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh
@@ -28,37 +46,18 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Set executable permission for Maven Wrapper
-        run: chmod +x mvnw
-
-      - name: Build Spring Boot Application
-        run: ./mvnw clean package
-
-      - name: Install Java on EC2
+      - name: Install Docker and Run Container on EC2
         run: |
           echo "${{ secrets.EC2_PRIVATE_KEY }}" > ec2-key.pem
           chmod 400 ec2-key.pem
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ steps.opentofu-outputs.outputs.instance_ip }} 'sudo amazon-linux-extras install java-openjdk17 -y'
-          rm ec2-key.pem
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Copy JAR to EC2
-        run: |
-          echo "${{ secrets.EC2_PRIVATE_KEY }}" > ec2-key.pem
-          chmod 400 ec2-key.pem
-          scp -o StrictHostKeyChecking=no -i ec2-key.pem target/demo-0.0.1-SNAPSHOT.jar ec2-user@${{ steps.opentofu-outputs.outputs.instance_ip }}:/home/ec2-user/
-          rm ec2-key.pem
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Run Spring Boot Application
-        run: |
-          echo "${{ secrets.EC2_PRIVATE_KEY }}" > ec2-key.pem
-          chmod 400 ec2-key.pem
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ steps.opentofu-outputs.outputs.instance_ip }} 'nohup java -jar /home/ec2-user/demo-0.0.1-SNAPSHOT.jar &'
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ steps.opentofu-outputs.outputs.instance_ip }} << EOF
+            sudo yum update -y
+            sudo amazon-linux-extras install docker
+            sudo service docker start
+            sudo usermod -a -G docker ec2-user
+            docker pull brunosantos/opentofu:latest
+            docker run -d -p 8080:8080 brunosantos/opentofu:latest
+          EOF
           rm ec2-key.pem
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
