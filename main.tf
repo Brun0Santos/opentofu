@@ -43,6 +43,7 @@ resource "aws_instance" "supera_opentofu_instance1" {
   ami                    = "ami-0f403e3180720dd7e"
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.supera_subnet1.id
+  key_name               = "chave-ssh-opentofu"
   vpc_security_group_ids = [aws_security_group.opentofu_supera_sg.id]
   tags = {
     Name = "instance_tofu_supera"
