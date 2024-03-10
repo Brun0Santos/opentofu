@@ -38,7 +38,7 @@ jobs:
         run: |
           echo "${{ secrets.EC2_PRIVATE_KEY }}" > ec2-key.pem
           chmod 400 ec2-key.pem
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ steps.opentofu-outputs.outputs.instance_ip }} 'sudo yum install -y java-11-openjdk'
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ steps.opentofu-outputs.outputs.instance_ip }} 'sudo yum install -y java-17-openjdk'
           rm ec2-key.pem
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
