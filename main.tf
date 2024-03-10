@@ -70,6 +70,7 @@ resource "aws_instance" "supera_opentofu_instance1" {
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.supera_subnet1.id
   vpc_security_group_ids = [aws_security_group.opentofu_supera_sg.id]
+  key_name               = "chave-ssh-opentofu"
   tags = {
     Name = "instance_tofu_supera"
   }
