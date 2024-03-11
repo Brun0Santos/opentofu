@@ -51,8 +51,8 @@ jobs:
         run: |
           echo "${{ secrets.EC2_PRIVATE_KEY }}" > chave-ssh-opentofu.pem
           chmod 400 chave-ssh-opentofu.pem
-          echo ${{ steps.opentofu-apply.outputs.instance_ip }}
-          ssh -T -o StrictHostKeyChecking=no -i chave-ssh-opentofu.pem ec2-user@${{ steps.opentofu-apply.outputs.instance_ip }} << EOF
+          echo ${{ steps.opentofu-apply.output.instance_ip }}
+          ssh -T -o StrictHostKeyChecking=no -i chave-ssh-opentofu.pem ec2-user@${{ steps.opentofu-apply.output.instance_ip }} << EOF
             sudo yum update -y
             sudo amazon-linux-extras install docker
             sudo service docker start
