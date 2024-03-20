@@ -12,6 +12,7 @@ public class OpenTofuController {
     @GetMapping
     public String message() {
         requestCount += 1;
-        return "Server is running, number of requests: " + requestCount;
+        String title = "<h1>OpenTofu, Wishlist</h1>";
+        return title + "Server is running, number of requests: " + "<h2>" + requestCount + "</h2";
     }
 }
