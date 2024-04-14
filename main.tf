@@ -45,7 +45,7 @@ resource "aws_route_table_association" "opentofu_rta" {
   route_table_id = aws_route_table.opentofu_rt.id
 }
 
-resource "aws_security_group" "opentofu_supera_sg" {
+resource "aws_security_group" "opentofu_sg" {
   name        = "opentofu_sg"
   description = "Security Group"
   vpc_id      = aws_vpc.opentofu_vpc.id
@@ -69,7 +69,7 @@ resource "aws_instance" "supera_opentofu_instance1" {
   ami                    = "ami-0f403e3180720dd7e"
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.opentofu_subnet1.id
-  vpc_security_group_ids = [aws_security_group.opentofu_supera_sg.id]
+  vpc_security_group_ids = [aws_security_group.opentofu_sg.id]
   key_name               = "chave-ssh-opentofu"
   tags = {
     Name = "instance_tofu"

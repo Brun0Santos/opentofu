@@ -13,6 +13,6 @@ public class OpenTofuController {
     public String message() {
         requestCount += 1;
         String title = "<h1>OpenTofu</h1>";
-        return title + "Server is running, number of requests: " + "<h2>" + requestCount + "</h2";
+        return title + "Server is running, number of requests:: " + "<h2>" + requestCount + "</h2";
     }
 }
